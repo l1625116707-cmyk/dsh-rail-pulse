@@ -84,6 +84,7 @@ window.__ModuleLoader__.load({
           const levels = levelsRef.current;
           const targets = targetRef.current;
           const smooth = cfgRef.current.smoothing;
+          const motion = cfgRef.current.motion == null ? 0.6 : cfgRef.current.motion;
           g.setTransform(dpr, 0, 0, dpr, 0, 0);
           g.clearRect(0, 0, WIDTH, H);
           const scale = cfgRef.current.scale || 1;
@@ -91,8 +92,9 @@ window.__ModuleLoader__.load({
           const barH = Math.min(4.2, 2.4 * scale);
           const top = Math.max(16, (H - gap * (BARS - 1) - barH) / 2);
           for (let i = 0; i < BARS; i++) {
-            levels[i] += (targets[i] - levels[i]) * smooth;
-            const v = Math.max(0.03, Math.min(1, levels[i]));
+            levels[i] += (targets[i] - levels[i]) * Math.max(0.04, 1 - smooth);
+            const raw = Math.max(0.03, Math.min(1, levels[i]));
+            const v = Math.max(0.03, Math.min(1, 0.5 + (raw - 0.5) * motion));
             const w = Math.min(WIDTH - 8, Math.max(8, 4 + v * 26 * scale));
             const x = WIDTH - 5 - w;
             const y = top + i * gap;
@@ -204,6 +206,13 @@ window.__ModuleLoader__.load({
             h('input', {
               type: 'range', min: 0.06, max: 0.7, step: 0.02, value: cfg.smoothing, style: slider,
               onChange: (e) => save({ smoothing: Number(e.target.value) })
+            })
+          ),
+          h('div', { style: row },
+            h('span', { style: label }, '起伏'),
+            h('input', {
+              type: 'range', min: 0.1, max: 1, step: 0.05, value: cfg.motion == null ? 0.6 : cfg.motion, style: slider,
+              onChange: (e) => save({ motion: Number(e.target.value) })
             })
           ),
           h('div', { style: row },
