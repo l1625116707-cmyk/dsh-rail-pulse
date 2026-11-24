@@ -45,5 +45,8 @@
   "homepage": "https://github.com/l1625116707-cmyk/dsh-rail-pulse#readme",
   "bugs": {
     "url": "https://github.com/l1625116707-cmyk/dsh-rail-pulse/issues"
-  }
+  },
+  "os": [
+    "darwin"
+  ]
 }

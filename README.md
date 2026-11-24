@@ -1,5 +1,8 @@
 # dsh-rail-pulse
 
+> **平台支持：目前仅支持 macOS（Apple Silicon / arm64）。**
+> Windows 和 Linux 暂未提供音频采集器；界面与配置是跨平台的，移植需要实现对应平台的 loopback 采集（Windows: WASAPI Loopback）。详见文末「平台支持」。
+
 给 DeepSeek Harness（DSH）右侧加一条**跟随电脑系统音频跳动**的频谱条。
 
 ![preview](docs/preview.png)
@@ -76,3 +79,14 @@ dsh plugin --profile desktop add github:l1625116707-cmyk/dsh-rail-pulse
 ## 许可
 
 MIT
+
+## 平台支持
+
+| 平台 | 状态 | 说明 |
+|---|---|---|
+| macOS (arm64) | ✅ 支持 | CoreAudio Process Tap 采集；旧系统回退 ScreenCaptureKit |
+| macOS (Intel) | ⚠️ 未测试 | 仓库内二进制为 arm64，需要本地重新 `./scripts/build.sh` |
+| Windows | ❌ 暂不支持 | 需要新增 WASAPI Loopback 采集器与 `build.ps1` |
+| Linux | ❌ 暂不支持 | 需要 PulseAudio/PipeWire monitor 采集器 |
+
+插件界面、配置接口和频谱绘制是跨平台的；缺的是各平台的系统音频采集二进制。
