@@ -148,8 +148,8 @@ window.__ModuleLoader__.load({
         style: {
           position: 'fixed', right: 0, top: 0, bottom: 0, width: WIDTH,
           zIndex: 60, pointerEvents: 'none',
-          background: cfg.visible ? 'var(--dsw-alias-bg-base, #0b0b0b)' : 'transparent',
-          borderLeft: cfg.visible ? '1px solid var(--dsw-alias-border-l2, rgba(127,127,127,0.18))' : 'none'
+          background: 'transparent',
+          borderLeft: 'none'
         }
       },
         h('canvas', { ref: canvasRef, style: { display: 'block', opacity: cfg.visible ? 1 : 0, transition: 'opacity .2s' } }),
