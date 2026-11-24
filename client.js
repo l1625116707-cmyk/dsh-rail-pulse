@@ -93,7 +93,7 @@ window.__ModuleLoader__.load({
           for (let i = 0; i < BARS; i++) {
             levels[i] += (targets[i] - levels[i]) * smooth;
             const v = Math.max(0.03, Math.min(1, levels[i]));
-            const w = Math.min(WIDTH - 8, 4 + v * 26 * scale);
+            const w = Math.min(WIDTH - 8, Math.max(8, 4 + v * 26 * scale));
             const x = WIDTH - 5 - w;
             const y = top + i * gap;
             const colorful = cfgRef.current.colorful;

@@ -117,6 +117,20 @@ final class TapCapture {
                 for j in lo...hi where j != i { local = max(local, bands[j]) }
                 if bands[i] < local * 0.12 { filled[i] = max(filled[i], local * 0.22) }
             }
+            // interpolate across runs of near-empty bands
+            var i = 1
+            while i < bn - 1 {
+                if filled[i] < 0.12 {
+                    var j = i
+                    while j < bn - 1 && filled[j] < 0.12 { j += 1 }
+                    let a = filled[i-1], b = filled[j]
+                    for k in i..<j {
+                        let t = Float(k - i + 1) / Float(j - i + 1)
+                        filled[k] = max(filled[k], (a + (b - a) * t) * 0.85)
+                    }
+                    i = j
+                } else { i += 1 }
+            }
             bands = filled
         }
         let payload: [String: Any] = ["bands": bands, "t": Date().timeIntervalSince1970]
