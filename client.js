@@ -86,9 +86,9 @@ window.__ModuleLoader__.load({
           const smooth = cfgRef.current.smoothing;
           g.setTransform(dpr, 0, 0, dpr, 0, 0);
           g.clearRect(0, 0, WIDTH, H);
-          const gap = Math.max(7, (H - 16) / BARS);
-          const barH = Math.max(2, Math.min(3.2, gap * 0.26));
-          const top = (H - gap * (BARS - 1) - barH) / 2;
+          const gap = Math.min(10, Math.max(6, (H - 32) / (BARS - 1)));
+          const barH = 2.4;
+          const top = Math.max(16, (H - gap * (BARS - 1) - barH) / 2);
           for (let i = 0; i < BARS; i++) {
             levels[i] += (targets[i] - levels[i]) * smooth;
             const v = Math.max(0.03, Math.min(1, levels[i]));
