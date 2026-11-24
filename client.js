@@ -8,6 +8,7 @@ window.__ModuleLoader__.load({
 
     function RailPulse() {
       const canvasRef = React.useRef(null);
+      const rootRef = React.useRef(null);
       const levelsRef = React.useRef(new Array(BARS).fill(0));
       const targetRef = React.useRef(new Array(BARS).fill(0));
       const cfgRef = React.useRef({ visible: true, gain: 1, smoothing: 0.35, colorful: true, color: '#e8e8e8' });
@@ -67,24 +68,27 @@ window.__ModuleLoader__.load({
         if (!canvas) return;
         const dpr = window.devicePixelRatio || 1;
         const resize = () => {
+          const h = rootRef.current ? rootRef.current.clientHeight : window.innerHeight;
           canvas.width = WIDTH * dpr;
-          canvas.height = window.innerHeight * dpr;
+          canvas.height = h * dpr;
           canvas.style.width = WIDTH + 'px';
-          canvas.style.height = window.innerHeight + 'px';
+          canvas.style.height = h + 'px';
         };
         resize();
+        const ro = new ResizeObserver(resize);
+        if (rootRef.current) ro.observe(rootRef.current);
         window.addEventListener('resize', resize);
         const g = canvas.getContext('2d');
         const draw = () => {
-          const H = window.innerHeight;
+          const H = canvas.clientHeight || window.innerHeight;
           const levels = levelsRef.current;
           const targets = targetRef.current;
           const smooth = cfgRef.current.smoothing;
           g.setTransform(dpr, 0, 0, dpr, 0, 0);
           g.clearRect(0, 0, WIDTH, H);
-          const gap = 10;
-          const barH = 2.4;
-          const top = Math.max(24, (H - BARS * gap) / 2);
+          const gap = Math.max(7, (H - 16) / BARS);
+          const barH = Math.max(2, Math.min(3.2, gap * 0.26));
+          const top = (H - gap * (BARS - 1) - barH) / 2;
           for (let i = 0; i < BARS; i++) {
             levels[i] += (targets[i] - levels[i]) * smooth;
             const v = Math.max(0.03, Math.min(1, levels[i]));
@@ -116,6 +120,7 @@ window.__ModuleLoader__.load({
         return () => {
           cancelAnimationFrame(rafRef.current);
           window.removeEventListener('resize', resize);
+          ro.disconnect();
         };
       }, []);
 
@@ -139,6 +144,7 @@ window.__ModuleLoader__.load({
       const slider = { width: 118, accentColor: '#8ab4ff' };
 
       return h('div', {
+        ref: rootRef,
         style: {
           position: 'fixed', right: 0, top: 0, bottom: 0, width: WIDTH,
           zIndex: 60, pointerEvents: 'none',
