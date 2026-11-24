@@ -1,4 +1,5 @@
 import { spawn } from 'node:child_process'
+import { existsSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
@@ -29,7 +30,9 @@ function pickCfg(o) {
 
 export function apply(ctx) {
   const dir = dirname(fileURLToPath(import.meta.url))
-  const bin = join(dir, 'bin', 'railpulse-audio')
+  const tapBin = join(dir, 'bin', 'railpulse-tap')
+  const sckBin = join(dir, 'bin', 'railpulse-audio')
+  let useTap = existsSync(tapBin)
   let latest = { bands: new Array(BANDS).fill(0) }
   let cfg = readCfg()
 
@@ -44,11 +47,13 @@ export function apply(ctx) {
     let child = null
     let buf = ''
     const start = () => {
+      const bin = useTap ? tapBin : sckBin
       child = spawn(bin, [], { stdio: ['ignore', 'pipe', 'pipe'] })
       child.stderr.on('data', (d) => console.error('[rail-pulse]', String(d).trim()))
       child.on('error', (e) => console.error('[rail-pulse] spawn failed:', e.message))
       child.on('exit', (code) => {
         console.error('[rail-pulse] helper exited', code)
+        if (!disposed && useTap && code !== 0) { useTap = false; start(); return }
         if (!disposed) setTimeout(start, 1500)
       })
       child.stdout.on('data', (d) => {
