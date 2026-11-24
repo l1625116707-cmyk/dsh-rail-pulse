@@ -46,15 +46,21 @@ export function apply(ctx) {
     let disposed = false
     let child = null
     let buf = ''
+    let fails = 0
+    let startedAt = 0
     const start = () => {
       const bin = useTap ? tapBin : sckBin
+      startedAt = Date.now()
       child = spawn(bin, [], { stdio: ['ignore', 'pipe', 'pipe'] })
       child.stderr.on('data', (d) => console.error('[rail-pulse]', String(d).trim()))
       child.on('error', (e) => console.error('[rail-pulse] spawn failed:', e.message))
       child.on('exit', (code) => {
         console.error('[rail-pulse] helper exited', code)
-        if (!disposed && useTap && code !== 0) { useTap = false; start(); return }
-        if (!disposed) setTimeout(start, 1500)
+        if (!disposed && useTap && code !== 0 && Date.now() - startedAt < 4000) {
+          fails += 1
+          if (fails >= 2) { useTap = false; fails = 0 }
+        }
+        if (!disposed) setTimeout(start, 1200)
       })
       child.stdout.on('data', (d) => {
         buf += d.toString()
