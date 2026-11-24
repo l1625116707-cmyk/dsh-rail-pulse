@@ -86,14 +86,15 @@ window.__ModuleLoader__.load({
           const smooth = cfgRef.current.smoothing;
           g.setTransform(dpr, 0, 0, dpr, 0, 0);
           g.clearRect(0, 0, WIDTH, H);
+          const scale = cfgRef.current.scale || 1;
           const gap = Math.min(10, Math.max(6, (H - 32) / (BARS - 1)));
-          const barH = 2.4;
+          const barH = Math.min(4.2, 2.4 * scale);
           const top = Math.max(16, (H - gap * (BARS - 1) - barH) / 2);
           for (let i = 0; i < BARS; i++) {
             levels[i] += (targets[i] - levels[i]) * smooth;
             const v = Math.max(0.03, Math.min(1, levels[i]));
-            const w = 6 + v * 26;
-            const x = WIDTH - 6 - w;
+            const w = Math.min(WIDTH - 8, 4 + v * 26 * scale);
+            const x = WIDTH - 5 - w;
             const y = top + i * gap;
             const colorful = cfgRef.current.colorful;
             if (colorful) {
@@ -203,6 +204,13 @@ window.__ModuleLoader__.load({
             h('input', {
               type: 'range', min: 0.06, max: 0.7, step: 0.02, value: cfg.smoothing, style: slider,
               onChange: (e) => save({ smoothing: Number(e.target.value) })
+            })
+          ),
+          h('div', { style: row },
+            h('span', { style: label }, '尺寸'),
+            h('input', {
+              type: 'range', min: 0.6, max: 1.8, step: 0.05, value: cfg.scale || 1, style: slider,
+              onChange: (e) => save({ scale: Number(e.target.value) })
             })
           ),
           h('div', { style: { ...label, marginTop: 6 } }, '选单色会自动关闭炫彩；跟随系统声音（ScreenCaptureKit），无需选择文件。')

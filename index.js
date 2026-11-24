@@ -11,7 +11,7 @@ const BANDS = 46
 const DSH_HOME = process.env.DSH_HOME || join(homedir(), '.dsh')
 const CFG_DIR = join(DSH_HOME, 'rail-pulse')
 const CFG_FILE = join(CFG_DIR, 'config.json')
-const DEFAULTS = { visible: true, gain: 1, smoothing: 0.35, colorful: true, color: '#e8e8e8' }
+const DEFAULTS = { visible: true, gain: 1, scale: 1, smoothing: 0.35, colorful: true, color: '#e8e8e8' }
 
 function readCfg() {
   try { return { ...DEFAULTS, ...JSON.parse(readFileSync(CFG_FILE, 'utf8')) } } catch { return { ...DEFAULTS } }
@@ -23,6 +23,7 @@ function pickCfg(o) {
   if (typeof o.color === 'string' && /^#[0-9a-fA-F]{6}$/.test(o.color)) out.color = o.color
   if (typeof o.gain === 'number' && isFinite(o.gain)) out.gain = Math.max(0.3, Math.min(3, o.gain))
   if (typeof o.smoothing === 'number' && isFinite(o.smoothing)) out.smoothing = Math.max(0.05, Math.min(0.8, o.smoothing))
+  if (typeof o.scale === 'number' && isFinite(o.scale)) out.scale = Math.max(0.5, Math.min(1.8, o.scale))
   return out
 }
 
