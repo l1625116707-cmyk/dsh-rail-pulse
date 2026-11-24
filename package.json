@@ -1,0 +1,49 @@
+{
+  "name": "dsh-rail-pulse",
+  "version": "0.3.0",
+  "private": true,
+  "type": "module",
+  "description": "DSH 右侧系统音频律动条：ScreenCaptureKit 原生采集，彩虹/单色可调。",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "cordis.patch.yml",
+    "bin/",
+    "native/",
+    "scripts/",
+    "docs/",
+    "README.md",
+    "LICENSE"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true
+    }
+  },
+  "license": "MIT",
+  "author": "l1625116707-cmyk",
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "visualizer",
+    "audio",
+    "screencapturekit",
+    "macos"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/l1625116707-cmyk/dsh-rail-pulse.git"
+  },
+  "homepage": "https://github.com/l1625116707-cmyk/dsh-rail-pulse#readme",
+  "bugs": {
+    "url": "https://github.com/l1625116707-cmyk/dsh-rail-pulse/issues"
+  }
+}
