@@ -1,6 +1,6 @@
 {
   "name": "dsh-rail-pulse",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "private": true,
   "type": "module",
   "description": "DSH 右侧系统音频律动条：ScreenCaptureKit 原生采集，彩虹/单色可调。",

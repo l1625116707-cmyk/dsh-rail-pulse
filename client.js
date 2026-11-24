@@ -148,7 +148,7 @@ window.__ModuleLoader__.load({
         style: {
           position: 'fixed', right: 0, top: 0, bottom: 0, width: WIDTH,
           zIndex: 60, pointerEvents: 'none',
-          background: 'transparent',
+          background: cfg.visible ? 'var(--dsw-alias-bg-base, #0b0b0b)' : 'transparent',
           borderLeft: 'none'
         }
       },
