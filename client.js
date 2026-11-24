@@ -127,21 +127,21 @@ window.__ModuleLoader__.load({
       const panelStyle = {
         position: 'fixed', right: WIDTH + 14, bottom: 52, width: 238,
         zIndex: 61, pointerEvents: 'auto',
-        background: 'rgba(24,24,26,0.94)', color: 'var(--dsw-alias-label-primary, #f2f2f2)',
-        border: '1px solid rgba(255,255,255,0.10)', borderRadius: 12,
-        boxShadow: '0 12px 40px rgba(0,0,0,0.45)', backdropFilter: 'blur(18px)',
+        background: 'var(--dsw-alias-bg-overlay, rgba(24,24,26,0.94))', color: 'var(--dsw-alias-label-primary, #f2f2f2)',
+        border: '1px solid var(--dsw-alias-border-l2, rgba(127,127,127,0.25))', borderRadius: 12,
+        boxShadow: '0 12px 40px rgba(0,0,0,0.35)', backdropFilter: 'blur(18px)',
         padding: '12px 13px 11px',
         font: '12px/1.5 -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif'
       };
       const btnStyle = {
         pointerEvents: 'auto', cursor: 'pointer', border: 'none', borderRadius: 999,
-        background: 'rgba(127,127,127,0.20)', color: 'var(--dsw-alias-label-primary, #ddd)',
+        background: 'var(--dsw-alias-bg-layer-2, rgba(127,127,127,0.20))', color: 'var(--dsw-alias-label-primary, #ddd)',
         font: '12px/1.4 -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif',
         padding: '6px 9px', backdropFilter: 'blur(8px)'
       };
       const row = { display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: '8px 0' };
-      const label = { opacity: 0.72, fontSize: 11 };
-      const slider = { width: 118, accentColor: '#8ab4ff' };
+      const label = { opacity: 1, fontSize: 11, color: 'var(--dsw-alias-label-tertiary, #8a8a8a)' };
+      const slider = { width: 118, accentColor: 'var(--dsw-alias-brand-primary, #8ab4ff)' };
 
       return h('div', {
         ref: rootRef,
@@ -149,14 +149,14 @@ window.__ModuleLoader__.load({
           position: 'fixed', right: 0, top: 0, bottom: 0, width: WIDTH,
           zIndex: 60, pointerEvents: 'none',
           background: cfg.visible ? 'var(--dsw-alias-bg-base, #0b0b0b)' : 'transparent',
-          borderLeft: cfg.visible ? '1px solid var(--dsw-alias-border-subtle, rgba(255,255,255,0.06))' : 'none'
+          borderLeft: cfg.visible ? '1px solid var(--dsw-alias-border-l2, rgba(127,127,127,0.18))' : 'none'
         }
       },
         h('canvas', { ref: canvasRef, style: { display: 'block', opacity: cfg.visible ? 1 : 0, transition: 'opacity .2s' } }),
         h('div', {
           style: { position: 'fixed', right: 8, bottom: 12, display: 'flex', flexDirection: 'column', gap: 6, alignItems: 'flex-end' }
         },
-          h('div', { style: { ...btnStyle, background: 'rgba(0,0,0,0.5)', color: '#aaa', fontSize: 10 } }, status),
+          h('div', { style: { ...btnStyle, background: 'var(--dsw-alias-bg-mask-2, rgba(0,0,0,0.45))', color: 'var(--dsw-alias-label-secondary, #aaa)', fontSize: 10 } }, status),
           h('button', { style: { ...btnStyle, padding: '6px 8px' }, onClick: () => setOpen((v) => !v), title: 'Rail Pulse 设置' }, '♪')
         ),
         open && h('div', { style: panelStyle },
@@ -169,7 +169,7 @@ window.__ModuleLoader__.load({
             h('input', {
               type: 'checkbox', checked: !!cfg.visible,
               onChange: (e) => save({ visible: e.target.checked }),
-              style: { width: 16, height: 16, accentColor: '#8ab4ff', cursor: 'pointer' }
+              style: { width: 16, height: 16, accentColor: 'var(--dsw-alias-brand-primary, #8ab4ff)', cursor: 'pointer' }
             })
           ),
           h('div', { style: row },
@@ -195,7 +195,7 @@ window.__ModuleLoader__.load({
             h('input', {
               type: 'checkbox', checked: !!cfg.colorful,
               onChange: (e) => save({ colorful: e.target.checked }),
-              style: { width: 16, height: 16, accentColor: '#8ab4ff', cursor: 'pointer' }
+              style: { width: 16, height: 16, accentColor: 'var(--dsw-alias-brand-primary, #8ab4ff)', cursor: 'pointer' }
             })
           ),
           h('div', { style: row },
