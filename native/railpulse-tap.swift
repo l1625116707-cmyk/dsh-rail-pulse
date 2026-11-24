@@ -103,12 +103,21 @@ final class TapCapture {
             if bandMax[i] < -60 { norm = 0 }
             bands[i] = max(0, min(1, pow(max(0, norm), 0.9)))
         }
-        if bands.count >= 3 {
+        let bn = bands.count
+        if bn >= 3 {
             var sm = bands
-            for i in 1..<(bands.count - 1) {
-                sm[i] = bands[i] * 0.6 + bands[i-1] * 0.2 + bands[i+1] * 0.2
+            for i in 1..<(bn - 1) {
+                sm[i] = bands[i] * 0.5 + bands[i-1] * 0.25 + bands[i+1] * 0.25
             }
             bands = sm
+            var filled = bands
+            for i in 0..<bn {
+                let lo = max(0, i - 2), hi = min(bn - 1, i + 2)
+                var local: Float = 0
+                for j in lo...hi where j != i { local = max(local, bands[j]) }
+                if bands[i] < local * 0.12 { filled[i] = max(filled[i], local * 0.22) }
+            }
+            bands = filled
         }
         let payload: [String: Any] = ["bands": bands, "t": Date().timeIntervalSince1970]
         if let data = try? JSONSerialization.data(withJSONObject: payload), let s = String(data: data, encoding: .utf8) {
