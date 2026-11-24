@@ -13,6 +13,7 @@ final class Grabber: NSObject, SCStreamOutput {
     private var fftSetup: FFTSetup?
     private var window: [Float] = []
     private var frameCount = 0
+    private var bandMax = [Float](repeating: -80, count: BANDS)
 
     override init() {
         super.init()
@@ -82,15 +83,11 @@ final class Grabber: NSObject, SCStreamOutput {
             for b in b0..<b1 { sum += mags[b] }
             let avg = sum / Float(b1 - b0)
             let db = 20 * log10(max(avg, 1e-7))
-            let norm = max(0, min(1, (db - 16) / 54))
-            bands[i] = norm
-        }
-        let peak = bands.max() ?? 0
-        if peak > 0.10 {
-            let g = min(3.0, 0.98 / peak)
-            for i in 0..<bands.count { bands[i] = min(1, pow(bands[i] * g, 0.85)) }
-        } else {
-            for i in 0..<bands.count { bands[i] = 0 }
+            bandMax[i] = max(db, bandMax[i] - 0.35)
+            let floor = bandMax[i] - 26
+            var norm = (db - floor) / 26
+            if bandMax[i] < -52 { norm = 0 }
+            bands[i] = max(0, min(1, pow(max(0, norm), 0.9)))
         }
         frameCount += 1
         if frameCount % 2 == 0 {
