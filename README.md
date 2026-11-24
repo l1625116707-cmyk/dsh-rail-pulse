@@ -1,5 +1,9 @@
 # dsh-rail-pulse
 
+> **侧脉 · Rail Pulse** —— 给 DeepSeek Harness 右边缘装一条会跟着电脑声音起伏的频谱条。
+>
+> 它直接采集系统正在播放的音频，把 46 个频段画成贴着右缘的短横线：不占布局、点击穿透，右下角 `♪` 可调灵敏度、起伏、尺寸、平滑与配色。macOS 专用（CoreAudio 采集，无需虚拟声卡）。
+
 > **平台支持：目前仅支持 macOS（Apple Silicon / arm64）。**
 > Windows 和 Linux 暂未提供音频采集器；界面与配置是跨平台的，移植需要实现对应平台的 loopback 采集（Windows: WASAPI Loopback）。详见文末「平台支持」。
 

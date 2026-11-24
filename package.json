@@ -3,7 +3,7 @@
   "version": "0.4.4",
   "private": true,
   "type": "module",
-  "description": "DSH 右侧系统音频律动条：ScreenCaptureKit 原生采集，彩虹/单色可调。",
+  "description": "侧脉 · Rail Pulse：DeepSeek Harness 右侧系统音频频谱条（macOS）",
   "exports": {
     ".": "./index.js",
     "./client": "./client.js"
