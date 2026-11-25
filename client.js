@@ -28,6 +28,19 @@ window.__ModuleLoader__.load({
         return () => { alive = false; };
       }, []);
 
+      React.useEffect(() => {
+        const t = setInterval(() => {
+          fetch('/rail-pulse/config', { cache: 'no-store' })
+            .then((r) => r.ok ? r.json() : null)
+            .then((o) => {
+              if (!o) return;
+              setCfg((c) => (JSON.stringify(o) === JSON.stringify(c) ? c : { ...c, ...o }));
+            })
+            .catch(() => {});
+        }, 4000);
+        return () => clearInterval(t);
+      }, []);
+
       const save = (patch) => {
         setCfg((c) => {
           const next = { ...c, ...patch };

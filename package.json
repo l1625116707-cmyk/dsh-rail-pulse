@@ -1,6 +1,6 @@
 {
   "name": "dsh-rail-pulse",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "private": true,
   "type": "module",
   "description": "侧脉 · Rail Pulse：DeepSeek Harness 右侧系统音频频谱条（macOS）",
